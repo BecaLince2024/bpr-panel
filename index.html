@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPR Automation — Panel</title>
+<style>
+:root {
+  color-scheme: light;
+  --page:      #f9f9f7;
+  --surface:   #fcfcfb;
+  --surface-2: #f3f2ee;
+  --text:      #0b0b0b;
+  --text-2:    #52514e;
+  --muted:     #898781;
+  --grid:      #e1e0d9;
+  --border:    rgba(11,11,11,0.10);
+  --accent:    #2a78d6;
+  --good:      #0ca30c;
+  --warning:   #eda100;
+  --critical:  #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:      #0d0d0d;
+    --surface:   #1a1a19;
+    --surface-2: #232322;
+    --text:      #ffffff;
+    --text-2:    #c3c2b7;
+    --muted:     #898781;
+    --grid:      #2c2c2a;
+    --border:    rgba(255,255,255,0.10);
+    --accent:    #3987e5;
+    --good:      #0ca30c;
+    --warning:   #c98500;
+    --critical:  #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232322;
+  --text: #ffffff; --text-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a;
+  --border: rgba(255,255,255,0.10); --accent: #3987e5;
+  --good: #0ca30c; --warning: #c98500; --critical: #e66767;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
+header.hero { margin-bottom: 28px; }
+h1 { font-size: 22px; margin: 0 0 6px; }
+.lede { color: var(--text-2); font-size: 14px; line-height: 1.6; max-width: 640px; }
+.callout {
+  margin-top: 14px; padding: 12px 14px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 13px; color: var(--text-2); line-height: 1.6;
+}
+section { margin-top: 36px; }
+h2 { font-size: 15px; margin: 0 0 4px; }
+.section-sub { color: var(--muted); font-size: 12.5px; margin: 0 0 14px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--text-2); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .02em; }
+tr:last-child td { border-bottom: none; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.mono { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; color: var(--text-2); }
+.muted { color: var(--muted); }
+.pill-btn {
+  font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+  border-radius: 999px; padding: 5px 12px;
+}
+.pill-btn:hover { background: var(--grid); }
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-row td { background: var(--surface-2); font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--chip-color); }
+.chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--chip-color); display: inline-block; }
+form.request-form { display: grid; gap: 12px; max-width: 420px; }
+.field { display: grid; gap: 5px; }
+.field label { font-size: 12px; color: var(--text-2); font-weight: 600; }
+.field input, .field select {
+  font: inherit; font-size: 14px; padding: 9px 10px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+}
+.field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.submit-btn {
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  border: none; background: var(--accent); color: white;
+  border-radius: 8px; padding: 11px 16px; margin-top: 4px;
+}
+.submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+.form-note { font-size: 12px; color: var(--muted); line-height: 1.6; }
+ul.activity { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+ul.activity li { padding: 9px 0; border-bottom: 1px solid var(--grid); display: flex; gap: 10px; align-items: baseline; }
+ul.activity li:last-child { border-bottom: none; }
+.activity-when { color: var(--muted); font-size: 11.5px; white-space: nowrap; }
+footer { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+.status-banner { display:flex; align-items:center; gap:8px; font-size:12.5px; color: var(--text-2); margin-bottom: 12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>BPR Automation — Panel</h1>
+    <p class="lede">
+      Dispara cargas de Market Share / BE / SISO a BigQuery y refresca los dashboards de Tableau
+      que las consumen. El procesamiento real corre en la laptop del equipo de Finance Analytics
+      (no en este sitio) — esta página solo encola el pedido y muestra el estado.
+    </p>
+    <div class="callout">
+      También puedes pedir estas cargas escribiendo por Teams (ej. <em>"Ejecutar MS SOCO"</em>) —
+      esta página es un canal adicional, no lo reemplaza. Los pedidos se procesan cada ~2 minutos
+      mientras esa laptop esté encendida y conectada a corriente; si está apagada o en pausa,
+      tu pedido queda en cola hasta que vuelva a correr.
+    </div>
+  </header>
+
+  <section>
+    <h2>Comandos disponibles</h2>
+    <p class="section-sub">Qué actualiza cada uno — tabla de BigQuery y datasource/dashboard de Tableau.</p>
+    <div class="card">
+      <table id="commands-table">
+        <thead>
+          <tr><th>BU</th><th>Tipo</th><th>Actualiza</th><th></th></tr>
+        </thead>
+        <tbody id="commands-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pedir una carga</h2>
+    <p class="section-sub">
+      Se abre una pestaña nueva de GitHub para confirmar el pedido (necesitas una cuenta de GitHub,
+      gratis) — así queda quién lo pidió y cuándo.
+    </p>
+    <div class="card">
+      <form class="request-form" id="request-form">
+        <div class="field">
+          <label for="f-nombre">Tu nombre</label>
+          <input id="f-nombre" name="nombre" type="text" required placeholder="Juan Pérez">
+        </div>
+        <div class="field">
+          <label for="f-email">Tu email</label>
+          <input id="f-email" name="email" type="email" required placeholder="juan.perez@mdlz.com">
+        </div>
+        <div class="field">
+          <label for="f-comando">Comando</label>
+          <select id="f-comando" name="comando" required></select>
+        </div>
+        <button class="submit-btn" type="submit">Ingresar →</button>
+        <p class="form-note">
+          Esto abre GitHub en una pestaña nueva con el pedido ya redactado — solo confirma
+          ("Submit new issue") para encolarlo. Autoreportado: no hay verificación de identidad,
+          igual que hoy con Teams.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <h2>Estado en tiempo real</h2>
+    <p class="section-sub" id="status-generated">Cargando…</p>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>BU</th><th>Tipo</th><th>Estado</th><th>Última corrida</th><th class="num">Filas</th><th>Pedido por</th></tr>
+        </thead>
+        <tbody id="status-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Actividad reciente</h2>
+    <p class="section-sub">Últimos pedidos hechos desde esta página (vía issues de GitHub).</p>
+    <div class="card">
+      <ul class="activity" id="activity-list"><li class="muted">Cargando…</li></ul>
+    </div>
+  </section>
+
+  <footer>
+    Este panel no tiene backend propio: el formulario abre un issue de GitHub, una laptop local lo
+    recoge y lo procesa, y el estado que ves arriba se publica de vuelta a este mismo repo cada
+    ~2 minutos. Código de la automatización (privado): consulta con el equipo de Finance Analytics.
+  </footer>
+
+</div>
+
+<script>
+const OWNER = "REPLACE_OWNER";
+const REPO = "bpr-panel";
+const LABEL = "comando";
+
+const LOAD_LABELS = {
+  shares: "M&S", os_siso: "OS SISO", mv_siso: "MV SISO",
+  BE: "BE", m_s_nielsen: "Nielsen M&S",
+};
+
+// Nombres de dashboards de Tableau pendientes de confirmar (token actual invalido).
+const TABLEAU_LABEL_PLACEHOLDER = "Tableau: nombre del dashboard pendiente de confirmar";
+
+const COMMANDS = [
+  { bu: "brazil", type: "shares",      table: "t_manual_M_and_S_Brazil" },
+  { bu: "mexico", type: "shares",      table: "t_manual_M_and_S_Mexico" },
+  { bu: "soco",   type: "shares",      table: "t_manual_m_and_s_cone" },
+  { bu: "wacam",  type: "shares",      table: "t_manual_M_and_S_wacam" },
+  { bu: "la",     type: "m_s_nielsen", table: "t_market_share_data" },
+  { bu: "brazil", type: "mv_siso",     table: "t_manual_new_mv_si_so_brazil" },
+  { bu: "mexico", type: "mv_siso",     table: "t_manual_new_mv_si_so_mexico" },
+  { bu: "soco",   type: "mv_siso",     table: "t_manual_new_mv_si_so_cone" },
+  { bu: "wacam",  type: "mv_siso",     table: "t_manual_new_mv_si_so_wacam" },
+  { bu: "brazil", type: "os_siso",     table: "t_manual_new_os_si_so_brazil" },
+  { bu: "mexico", type: "os_siso",     table: "t_manual_new_os_si_so_mexico" },
+  { bu: "soco",   type: "os_siso",     table: "t_manual_new_os_si_so_cone" },
+  { bu: "wacam",  type: "os_siso",     table: "t_manual_new_os_si_so_wacam" },
+  { bu: "brazil", type: "BE",          table: "t_manual_new_be_brazil" },
+  { bu: "mexico", type: "BE",          table: "t_manual_new_be_mexico" },
+  { bu: "soco",   type: "BE",          table: "t_manual_new_be_so_cone" },
+  { bu: "wacam",  type: "BE",          table: "t_manual_new_be_wacam" },
+  { bu: "hq",     type: "BE",          table: "t_manual_new_be_hq" },
+];
+
+const STATUS_META = {
+  good:     { color: "var(--good)",     label: "OK" },
+  warning:  { color: "var(--warning)",  label: "Atencion" },
+  critical: { color: "var(--critical)", label: "Error" },
+  none:     { color: "var(--muted)",    label: "Sin datos" },
+};
+
+function chip(status, label) {
+  const meta = STATUS_META[status] || STATUS_META.none;
+  const span = document.createElement("span");
+  span.className = "chip";
+  span.style.setProperty("--chip-color", meta.color);
+  span.innerHTML = `<span class="chip-dot"></span>${escapeHtml(label ?? meta.label)}`;
+  return span;
+}
+
+function escapeHtml(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+
+function relativeTime(iso) {
+  if (!iso) return "sin datos";
+  const dt = new Date(iso);
+  const secs = (Date.now() - dt.getTime()) / 1000;
+  if (secs < 60) return "hace segundos";
+  if (secs < 3600) return `hace ${Math.floor(secs / 60)} min`;
+  if (secs < 86400) return `hace ${Math.floor(secs / 3600)} h`;
+  return `hace ${Math.floor(secs / 86400)} d`;
+}
+
+function renderCommands() {
+  const body = document.getElementById("commands-body");
+  const select = document.getElementById("f-comando");
+  body.innerHTML = "";
+  select.innerHTML = "";
+
+  COMMANDS.forEach((cmd, i) => {
+    const label = LOAD_LABELS[cmd.type] || cmd.type;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${cmd.bu.toUpperCase()}</td>
+      <td>${escapeHtml(label)}</td>
+      <td class="mono">${escapeHtml(cmd.table)}</td>
+      <td><button class="pill-btn" type="button" data-toggle="${i}">Ver comando</button></td>
+    `;
+    const detail = document.createElement("tr");
+    detail.className = "detail-row";
+    detail.id = `detail-${i}`;
+    detail.innerHTML = `<td colspan="4">
+      Esto carga el Excel/CSV fuente de <strong>${cmd.bu.toUpperCase()} — ${escapeHtml(label)}</strong>
+      a la tabla de BigQuery <span class="mono">${escapeHtml(cmd.table)}</span>, y despues dispara
+      un refresh en Tableau. ${escapeHtml(TABLEAU_LABEL_PLACEHOLDER)}.
+    </td>`;
+    body.appendChild(row);
+    body.appendChild(detail);
+
+    const opt = document.createElement("option");
+    opt.value = `${cmd.bu}|${cmd.type}`;
+    opt.textContent = `${cmd.bu.toUpperCase()} — ${label}`;
+    select.appendChild(opt);
+  });
+
+  body.querySelectorAll("[data-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(`detail-${btn.dataset.toggle}`).classList.toggle("open");
+    });
+  });
+}
+
+function renderRequestForm() {
+  document.getElementById("request-form").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const nombre = document.getElementById("f-nombre").value.trim();
+    const email = document.getElementById("f-email").value.trim();
+    const [bu, tipo] = document.getElementById("f-comando").value.split("|");
+
+    const title = encodeURIComponent(`Comando: ${bu.toUpperCase()} / ${LOAD_LABELS[tipo] || tipo}`);
+    const body = encodeURIComponent(
+      `BU: ${bu}\nTipo: ${tipo}\nNombre: ${nombre}\nEmail: ${email}\n\n` +
+      `(generado desde el panel, no editar las lineas de arriba)`
+    );
+    const url = `https://github.com/${OWNER}/${REPO}/issues/new?title=${title}&body=${body}&labels=${LABEL}`;
+    window.open(url, "_blank", "noopener");
+  });
+}
+
+async function loadStatus() {
+  const genEl = document.getElementById("status-generated");
+  try {
+    const res = await fetch(`status.json?t=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+
+    genEl.textContent = `Generado ${new Date(data.generated_at).toLocaleString("es")} ` +
+      `desde la laptop que procesa la cola.`;
+
+    const body = document.getElementById("status-body");
+    body.innerHTML = "";
+    (data.rows || []).forEach((r) => {
+      const tr = document.createElement("tr");
+      const tdEstado = document.createElement("td");
+      tdEstado.appendChild(chip(r.status, STATUS_META[r.status]?.label));
+      tr.innerHTML = `<td>${escapeHtml(r.bu)}</td><td>${escapeHtml(r.load_label)}</td>`;
+      tr.appendChild(tdEstado);
+      const tdWhen = document.createElement("td");
+      tdWhen.innerHTML = r.timestamp
+        ? `${new Date(r.timestamp).toLocaleString("es")} <span class="muted">(${relativeTime(r.timestamp)})</span>`
+        : `<span class="muted">nunca</span>`;
+      tr.appendChild(tdWhen);
+      tr.innerHTML += `<td class="num">${r.rows ?? "-"}</td><td>${escapeHtml(r.submitted_by || "-")}</td>`;
+      body.appendChild(tr);
+    });
+  } catch (err) {
+    genEl.textContent = "No se pudo cargar el estado (status.json). ¿Ya corrió al menos un ciclo desde que se publicó el panel?";
+  }
+}
+
+async function loadActivity() {
+  const list = document.getElementById("activity-list");
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${OWNER}/${REPO}/issues?state=all&labels=${LABEL}&sort=created&direction=desc&per_page=15`
+    );
+    if (!res.ok) throw new Error(res.status);
+    const issues = await res.json();
+    list.innerHTML = "";
+    if (!issues.length) {
+      list.innerHTML = `<li class="muted">Todavia no hay pedidos.</li>`;
+      return;
+    }
+    issues.forEach((issue) => {
+      const li = document.createElement("li");
+      const estado = issue.state === "open" ? "en curso" : "cerrado";
+      li.innerHTML = `
+        <span>#${issue.number} ${escapeHtml(issue.title)} — ${estado}
+          <span class="muted">(por @${escapeHtml(issue.user.login)})</span></span>
+        <span class="activity-when">${relativeTime(issue.created_at)}</span>
+      `;
+      list.appendChild(li);
+    });
+  } catch (err) {
+    list.innerHTML = `<li class="muted">No se pudo cargar la actividad de GitHub.</li>`;
+  }
+}
+
+renderCommands();
+renderRequestForm();
+loadStatus();
+loadActivity();
+</script>
+</body>
+</html>
