@@ -1,0 +1,187 @@
+{
+  "generated_at": "2026-07-21T09:30:51.017158",
+  "automation_status": "critical",
+  "pending_count": 13,
+  "rows": [
+    {
+      "bu": "brazil",
+      "load_type": "BE",
+      "load_label": "BE",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "brazil",
+      "load_type": "mv_siso",
+      "load_label": "MV SISO",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "brazil",
+      "load_type": "os_siso",
+      "load_label": "OS SISO",
+      "status": "critical",
+      "timestamp": "2026-06-23T15:55:13.676982+00:00",
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "brazil",
+      "load_type": "shares",
+      "load_label": "M&S",
+      "status": "critical",
+      "timestamp": "2026-06-15T03:57:06.327140+00:00",
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "hq",
+      "load_type": "BE",
+      "load_label": "BE",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "la",
+      "load_type": "m_s_nielsen",
+      "load_label": "Nielsen M&S",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "mexico",
+      "load_type": "BE",
+      "load_label": "BE",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "mexico",
+      "load_type": "mv_siso",
+      "load_label": "MV SISO",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "mexico",
+      "load_type": "os_siso",
+      "load_label": "OS SISO",
+      "status": "warning",
+      "timestamp": "2026-05-22T13:47:57.853895+00:00",
+      "rows": 336,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "mexico",
+      "load_type": "shares",
+      "load_label": "M&S",
+      "status": "warning",
+      "timestamp": "2026-05-22T14:03:17.388537+00:00",
+      "rows": 978,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "soco",
+      "load_type": "BE",
+      "load_label": "BE",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "soco",
+      "load_type": "mv_siso",
+      "load_label": "MV SISO",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "soco",
+      "load_type": "os_siso",
+      "load_label": "OS SISO",
+      "status": "critical",
+      "timestamp": "2026-05-20T18:40:03.004851+00:00",
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "soco",
+      "load_type": "shares",
+      "load_label": "M&S",
+      "status": "warning",
+      "timestamp": "2026-05-22T14:06:16.118422+00:00",
+      "rows": 672,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "wacam",
+      "load_type": "BE",
+      "load_label": "BE",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "wacam",
+      "load_type": "mv_siso",
+      "load_label": "MV SISO",
+      "status": "none",
+      "timestamp": null,
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "wacam",
+      "load_type": "os_siso",
+      "load_label": "OS SISO",
+      "status": "critical",
+      "timestamp": "2026-06-17T21:31:05.183314+00:00",
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    },
+    {
+      "bu": "wacam",
+      "load_type": "shares",
+      "load_label": "M&S",
+      "status": "critical",
+      "timestamp": "2026-06-18T16:51:22.682762+00:00",
+      "rows": null,
+      "submitted_by": "",
+      "source": ""
+    }
+  ]
+}
