@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T10:02:05.722998",
+  "generated_at": "2026-07-22T15:21:21.451128",
   "automation_status": "critical",
   "pending_count": 0,
   "tableau_refreshes": [
@@ -8,6 +8,7 @@
       "owner": "Cordova, Bruno (Contractor)",
       "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1414750",
       "status": "triggered",
+      "hint": "",
       "workbooks": [
         {
           "name": "da_bpr_v3",
@@ -24,6 +25,7 @@
       "owner": "Renato Vilcarromero",
       "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1604048",
       "status": "error",
+      "hint": "Sin permiso. Pedir acceso a Renato Vilcarromero (dueño de este datasource).",
       "workbooks": [
         {
           "name": "M&S DASH",
@@ -40,6 +42,7 @@
       "owner": "Cordova, Bruno (Contractor)",
       "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1538640",
       "status": "triggered",
+      "hint": "",
       "workbooks": [
         {
           "name": "M&S DASHBOARD",
@@ -52,6 +55,7 @@
       "owner": "Cordova, Bruno (Contractor)",
       "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1538641",
       "status": "triggered",
+      "hint": "",
       "workbooks": [
         {
           "name": "M&S DASHBOARD",
@@ -64,6 +68,7 @@
       "owner": "Cordova, Bruno (Contractor)",
       "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1539905",
       "status": "triggered",
+      "hint": "",
       "workbooks": [
         {
           "name": "M&S DASHBOARD",
