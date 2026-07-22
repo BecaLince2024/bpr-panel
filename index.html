@@ -7,151 +7,292 @@
 <style>
 :root {
   color-scheme: light;
-  --page:      #f9f9f7;
-  --surface:   #fcfcfb;
-  --surface-2: #f3f2ee;
-  --text:      #0b0b0b;
-  --text-2:    #52514e;
-  --muted:     #898781;
-  --grid:      #e1e0d9;
-  --border:    rgba(11,11,11,0.10);
-  --accent:    #2a78d6;
+  --page:      #f4f6f9;
+  --surface:   #ffffff;
+  --surface-2: #f2f4f8;
+  --text:      #10151f;
+  --text-2:    #4b5566;
+  --muted:     #798394;
+  --grid:      #e4e8ef;
+  --border:    rgba(16,21,31,0.09);
+  --shadow:    0 1px 2px rgba(16,21,31,.04), 0 8px 24px -12px rgba(16,21,31,.12);
+
+  --brand-1:   #002d72;   /* azul corporativo oscuro (hero) */
+  --brand-2:   #0057b8;   /* azul corporativo medio */
+  --accent:    #0057b8;
+  --accent-ink:#ffffff;
+
   --good:      #0ca30c;
-  --warning:   #eda100;
+  --warning:   #b9790a;
   --critical:  #d03b3b;
 }
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
-    --page:      #0d0d0d;
-    --surface:   #1a1a19;
-    --surface-2: #232322;
-    --text:      #ffffff;
-    --text-2:    #c3c2b7;
-    --muted:     #898781;
-    --grid:      #2c2c2a;
-    --border:    rgba(255,255,255,0.10);
-    --accent:    #3987e5;
-    --good:      #0ca30c;
-    --warning:   #c98500;
-    --critical:  #e66767;
+    --page:      #0b0e14;
+    --surface:   #131722;
+    --surface-2: #1a2030;
+    --text:      #f4f6fb;
+    --text-2:    #aab2c5;
+    --muted:     #7c869b;
+    --grid:      #232a3a;
+    --border:    rgba(255,255,255,0.08);
+    --shadow:    0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+    --brand-1:   #001c47;
+    --brand-2:   #3987e5;
+    --accent:    #4c9bf0;
+    --accent-ink:#04101f;
+    --good:      #16c060;
+    --warning:   #e0a638;
+    --critical:  #f0716f;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232322;
-  --text: #ffffff; --text-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a;
-  --border: rgba(255,255,255,0.10); --accent: #3987e5;
-  --good: #0ca30c; --warning: #c98500; --critical: #e66767;
+  --page: #0b0e14; --surface: #131722; --surface-2: #1a2030;
+  --text: #f4f6fb; --text-2: #aab2c5; --muted: #7c869b; --grid: #232a3a;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+  --brand-1: #001c47; --brand-2: #3987e5; --accent: #4c9bf0; --accent-ink: #04101f;
+  --good: #16c060; --warning: #e0a638; --critical: #f0716f;
 }
+
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--page); color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-.wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
-header.hero { margin-bottom: 28px; }
-h1 { font-size: 22px; margin: 0 0 6px; }
-.lede { color: var(--text-2); font-size: 14px; line-height: 1.6; max-width: 640px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 72px; }
+
+/* ---------- top nav ---------- */
+.topnav {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1);
+  border-bottom: 1px solid var(--border);
+}
+.topnav-inner {
+  max-width: 1080px; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; gap: 18px; height: 56px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.topnav-inner::-webkit-scrollbar { display: none; }
+.brand-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 8px; flex: none;
+  background: linear-gradient(135deg, var(--brand-2), var(--brand-1));
+  color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .02em;
+}
+.brand-name { font-weight: 700; font-size: 14px; white-space: nowrap; color: var(--text); }
+.topnav nav { display: flex; gap: 4px; margin-left: auto; }
+.topnav nav a {
+  color: var(--text-2); font-size: 12.5px; font-weight: 600; white-space: nowrap;
+  padding: 7px 10px; border-radius: 7px;
+}
+.topnav nav a:hover { background: var(--surface-2); text-decoration: none; color: var(--text); }
+
+/* ---------- hero ---------- */
+header.hero {
+  margin: 28px 0 32px; padding: clamp(20px, 4vw, 36px);
+  border-radius: 18px; color: #fff;
+  background:
+    radial-gradient(1200px 320px at 15% -20%, rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(135deg, var(--brand-2), var(--brand-1));
+  box-shadow: var(--shadow);
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(255,255,255,.14); padding: 4px 10px; border-radius: 999px;
+  margin-bottom: 12px;
+}
+h1 { font-size: clamp(22px, 3.4vw, 30px); margin: 0 0 8px; letter-spacing: -.01em; }
+.lede { color: rgba(255,255,255,.86); font-size: 14px; line-height: 1.65; max-width: 640px; }
 .callout {
-  margin-top: 14px; padding: 12px 14px; border-radius: 10px;
-  background: var(--surface-2); border: 1px solid var(--border);
-  font-size: 13px; color: var(--text-2); line-height: 1.6;
+  margin-top: 18px; padding: 13px 15px; border-radius: 12px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.16);
+  font-size: 13px; color: rgba(255,255,255,.92); line-height: 1.6;
 }
-section { margin-top: 36px; }
-h2 { font-size: 15px; margin: 0 0 4px; }
-.section-sub { color: var(--muted); font-size: 12.5px; margin: 0 0 14px; }
+
+/* ---------- kpi strip ---------- */
+.kpis {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-bottom: 8px;
+}
+.kpi {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.kpi-label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+.kpi-value { font-size: 17px; font-weight: 700; }
+
+/* ---------- sections ---------- */
+section { margin-top: 40px; scroll-margin-top: 72px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h2 { font-size: 17px; margin: 0 0 4px; letter-spacing: -.005em; }
+.section-sub { color: var(--muted); font-size: 12.5px; margin: 0 0 16px; line-height: 1.5; }
+
 .card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px; box-shadow: var(--shadow);
 }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
-th { color: var(--text-2); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .02em; }
+
+/* ---------- responsive table wrapper ---------- */
+.table-scroll { overflow-x: auto; border-radius: 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--muted); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
 tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface-2); }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .mono { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; color: var(--text-2); }
 .muted { color: var(--muted); }
+
+/* ---------- command cards ---------- */
+.cmd-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;
+}
+.cmd-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 8px;
+}
+.cmd-top { display: flex; align-items: center; gap: 8px; }
+.bu-badge {
+  font-size: 11px; font-weight: 800; letter-spacing: .03em; color: var(--accent-ink);
+  background: var(--accent); border-radius: 7px; padding: 3px 8px; flex: none;
+}
+.cmd-type { font-weight: 700; font-size: 14px; }
+.cmd-table { font-family: ui-monospace, Consolas, monospace; font-size: 11px; color: var(--muted); word-break: break-all; }
 .pill-btn {
-  font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
   border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
-  border-radius: 999px; padding: 5px 12px;
+  border-radius: 999px; padding: 6px 12px; align-self: flex-start;
 }
 .pill-btn:hover { background: var(--grid); }
-.detail-row { display: none; }
-.detail-row.open { display: table-row; }
-.detail-row td { background: var(--surface-2); font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
-.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--chip-color); }
+.cmd-detail {
+  display: none; font-size: 12.5px; color: var(--text-2); line-height: 1.6;
+  border-top: 1px dashed var(--grid); padding-top: 8px; margin-top: 2px;
+}
+.cmd-detail.open { display: block; }
+
+/* ---------- chips ---------- */
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--chip-color); }
 .chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--chip-color); display: inline-block; }
-form.request-form { display: grid; gap: 12px; max-width: 420px; }
-.field { display: grid; gap: 5px; }
-.field label { font-size: 12px; color: var(--text-2); font-weight: 600; }
+
+/* ---------- form ---------- */
+form.request-form { display: grid; gap: 14px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 12px; color: var(--text-2); font-weight: 700; }
 .field input, .field select {
-  font: inherit; font-size: 14px; padding: 9px 10px; border-radius: 8px;
+  font: inherit; font-size: 15px; padding: 11px 12px; border-radius: 10px;
   border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+  width: 100%;
 }
 .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 .submit-btn {
-  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
-  border: none; background: var(--accent); color: white;
-  border-radius: 8px; padding: 11px 16px; margin-top: 4px;
+  font: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer;
+  border: none; background: linear-gradient(135deg, var(--brand-2), var(--brand-1)); color: #fff;
+  border-radius: 10px; padding: 13px 18px; margin-top: 2px; box-shadow: var(--shadow);
 }
+.submit-btn:hover { filter: brightness(1.06); }
 .submit-btn:disabled { opacity: .5; cursor: not-allowed; }
 .form-note { font-size: 12px; color: var(--muted); line-height: 1.6; }
-ul.activity { list-style: none; margin: 0; padding: 0; font-size: 13px; }
-ul.activity li { padding: 9px 0; border-bottom: 1px solid var(--grid); display: flex; gap: 10px; align-items: baseline; }
-ul.activity li:last-child { border-bottom: none; }
+
+/* ---------- lists ---------- */
+ul.activity, ul.tableau-list { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+ul.activity li {
+  padding: 11px 0; border-bottom: 1px solid var(--grid);
+  display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+}
+ul.tableau-list li { padding: 12px 0; border-bottom: 1px solid var(--grid); }
+ul.activity li:last-child, ul.tableau-list li:last-child { border-bottom: none; }
 .activity-when { color: var(--muted); font-size: 11.5px; white-space: nowrap; }
-footer { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.6; }
-.status-banner { display:flex; align-items:center; gap:8px; font-size:12.5px; color: var(--text-2); margin-bottom: 12px;}
+
+footer {
+  margin-top: 48px; font-size: 12px; color: var(--muted); line-height: 1.7;
+  border-top: 1px solid var(--grid); padding-top: 20px;
+}
 </style>
 </head>
 <body>
+
+<div class="topnav">
+  <div class="topnav-inner">
+    <span class="brand-mark">BPR</span>
+    <span class="brand-name">BPR Automation</span>
+    <nav>
+      <a href="#comandos">Comandos</a>
+      <a href="#pedir">Pedir carga</a>
+      <a href="#estado">Estado</a>
+      <a href="#tableau">Tableau</a>
+      <a href="#actividad">Actividad</a>
+    </nav>
+  </div>
+</div>
+
 <div class="wrap">
 
   <header class="hero">
-    <h1>BPR Automation — Panel</h1>
+    <span class="hero-eyebrow">● Panel operativo</span>
+    <h1>BPR Automation</h1>
     <p class="lede">
       Dispara cargas de Market Share / BE / SISO a BigQuery y refresca los dashboards de Tableau
       que las consumen. El procesamiento real corre en la laptop del equipo de Finance Analytics
       (no en este sitio) — esta página solo encola el pedido y muestra el estado.
     </p>
     <div class="callout">
-      También puedes pedir estas cargas escribiendo por Teams (ej. <em>"Ejecutar MS SOCO"</em>) —
+      También podés pedir estas cargas escribiendo por Teams (ej. <em>"Ejecutar MS SOCO"</em>) —
       esta página es un canal adicional, no lo reemplaza. Los pedidos se procesan cada ~2 minutos
       mientras esa laptop esté encendida y conectada a corriente; si está apagada o en pausa,
       tu pedido queda en cola hasta que vuelva a correr.
     </div>
   </header>
 
-  <section>
-    <h2>Comandos disponibles</h2>
-    <p class="section-sub">Qué actualiza cada uno — tabla de BigQuery y datasource/dashboard de Tableau.</p>
-    <div class="card">
-      <table id="commands-table">
-        <thead>
-          <tr><th>BU</th><th>Tipo</th><th>Actualiza</th><th></th></tr>
-        </thead>
-        <tbody id="commands-body"></tbody>
-      </table>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-label">Automatización</div>
+      <div class="kpi-value" id="kpi-automation">Cargando…</div>
     </div>
+    <div class="kpi">
+      <div class="kpi-label">Pendientes en cola</div>
+      <div class="kpi-value" id="kpi-pending">Cargando…</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Comandos disponibles</div>
+      <div class="kpi-value">18</div>
+    </div>
+  </div>
+
+  <section id="comandos">
+    <div class="section-head"><h2>Comandos disponibles</h2></div>
+    <p class="section-sub">Qué actualiza cada uno — tabla de BigQuery y datasource/dashboard de Tableau.</p>
+    <div class="cmd-grid" id="commands-body"></div>
   </section>
 
-  <section>
-    <h2>Pedir una carga</h2>
+  <section id="pedir">
+    <div class="section-head"><h2>Pedir una carga</h2></div>
     <p class="section-sub">
-      Se abre una pestaña nueva de GitHub para confirmar el pedido (necesitas una cuenta de GitHub,
+      Se abre una pestaña nueva de GitHub para confirmar el pedido (necesitás una cuenta de GitHub,
       gratis) — así queda quién lo pidió y cuándo.
     </p>
     <div class="card">
       <form class="request-form" id="request-form">
-        <div class="field">
-          <label for="f-nombre">Tu nombre</label>
-          <input id="f-nombre" name="nombre" type="text" required placeholder="Juan Pérez">
-        </div>
-        <div class="field">
-          <label for="f-email">Tu email</label>
-          <input id="f-email" name="email" type="email" required placeholder="juan.perez@mdlz.com">
+        <div class="form-grid">
+          <div class="field">
+            <label for="f-nombre">Tu nombre</label>
+            <input id="f-nombre" name="nombre" type="text" required placeholder="Juan Pérez">
+          </div>
+          <div class="field">
+            <label for="f-email">Tu email</label>
+            <input id="f-email" name="email" type="email" required placeholder="juan.perez@mdlz.com">
+          </div>
         </div>
         <div class="field">
           <label for="f-comando">Comando</label>
@@ -159,7 +300,7 @@ footer { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.
         </div>
         <button class="submit-btn" type="submit">Ingresar →</button>
         <p class="form-note">
-          Esto abre GitHub en una pestaña nueva con el pedido ya redactado — solo confirma
+          Esto abre GitHub en una pestaña nueva con el pedido ya redactado — solo confirmá
           ("Submit new issue") para encolarlo. Autoreportado: no hay verificación de identidad,
           igual que hoy con Teams.
         </p>
@@ -167,29 +308,31 @@ footer { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.
     </div>
   </section>
 
-  <section>
-    <h2>Estado en tiempo real</h2>
+  <section id="estado">
+    <div class="section-head"><h2>Estado en tiempo real</h2></div>
     <p class="section-sub" id="status-generated">Cargando…</p>
-    <div class="card">
-      <table>
-        <thead>
-          <tr><th>BU</th><th>Tipo</th><th>Estado</th><th>Última corrida</th><th class="num">Filas</th><th>Pedido por</th></tr>
-        </thead>
-        <tbody id="status-body"></tbody>
-      </table>
+    <div class="card" style="padding:0;">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>BU</th><th>Tipo</th><th>Estado</th><th>Última corrida</th><th class="num">Filas</th><th>Pedido por</th></tr>
+          </thead>
+          <tbody id="status-body"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>Datasources de Tableau (último refresh)</h2>
+  <section id="tableau">
+    <div class="section-head"><h2>Datasources de Tableau (último refresh)</h2></div>
     <p class="section-sub">Click en el nombre para abrir el datasource o el dashboard en Tableau y confirmar que es real.</p>
     <div class="card">
-      <ul class="activity" id="tableau-list"><li class="muted">Cargando…</li></ul>
+      <ul class="tableau-list" id="tableau-list"><li class="muted">Cargando…</li></ul>
     </div>
   </section>
 
-  <section>
-    <h2>Actividad reciente</h2>
+  <section id="actividad">
+    <div class="section-head"><h2>Actividad reciente</h2></div>
     <p class="section-sub">Últimos pedidos hechos desde esta página (vía issues de GitHub).</p>
     <div class="card">
       <ul class="activity" id="activity-list"><li class="muted">Cargando…</li></ul>
@@ -199,7 +342,7 @@ footer { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.
   <footer>
     Este panel no tiene backend propio: el formulario abre un issue de GitHub, una laptop local lo
     recoge y lo procesa, y el estado que ves arriba se publica de vuelta a este mismo repo cada
-    ~2 minutos. Código de la automatización (privado): consulta con el equipo de Finance Analytics.
+    ~2 minutos. Código de la automatización (privado): consultá con el equipo de Finance Analytics.
   </footer>
 
 </div>
@@ -214,7 +357,6 @@ const LOAD_LABELS = {
   BE: "BE", m_s_nielsen: "Nielsen M&S",
 };
 
-// Nombres de dashboards de Tableau pendientes de confirmar (token actual invalido).
 const TABLEAU_REFRESH_NOTE = "los datasources de Tableau que consumen estas tablas (ver la sección \"Datasources de Tableau\" más abajo para nombres reales y links)";
 
 const COMMANDS = [
@@ -271,31 +413,30 @@ function relativeTime(iso) {
 }
 
 function renderCommands() {
-  const body = document.getElementById("commands-body");
+  const grid = document.getElementById("commands-body");
   const select = document.getElementById("f-comando");
-  body.innerHTML = "";
+  grid.innerHTML = "";
   select.innerHTML = "";
 
   COMMANDS.forEach((cmd, i) => {
     const label = LOAD_LABELS[cmd.type] || cmd.type;
 
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${cmd.bu.toUpperCase()}</td>
-      <td>${escapeHtml(label)}</td>
-      <td class="mono">${escapeHtml(cmd.table)}</td>
-      <td><button class="pill-btn" type="button" data-toggle="${i}">Ver comando</button></td>
+    const card = document.createElement("div");
+    card.className = "cmd-card";
+    card.innerHTML = `
+      <div class="cmd-top">
+        <span class="bu-badge">${cmd.bu.toUpperCase()}</span>
+        <span class="cmd-type">${escapeHtml(label)}</span>
+      </div>
+      <div class="cmd-table">${escapeHtml(cmd.table)}</div>
+      <button class="pill-btn" type="button" data-toggle="${i}">Ver comando</button>
+      <div class="cmd-detail" id="detail-${i}">
+        Esto carga el Excel/CSV fuente de <strong>${cmd.bu.toUpperCase()} — ${escapeHtml(label)}</strong>
+        a la tabla de BigQuery <span class="mono">${escapeHtml(cmd.table)}</span>, y después dispara
+        un refresh en ${escapeHtml(TABLEAU_REFRESH_NOTE)}.
+      </div>
     `;
-    const detail = document.createElement("tr");
-    detail.className = "detail-row";
-    detail.id = `detail-${i}`;
-    detail.innerHTML = `<td colspan="4">
-      Esto carga el Excel/CSV fuente de <strong>${cmd.bu.toUpperCase()} — ${escapeHtml(label)}</strong>
-      a la tabla de BigQuery <span class="mono">${escapeHtml(cmd.table)}</span>, y después dispara
-      un refresh en ${escapeHtml(TABLEAU_REFRESH_NOTE)}.
-    </td>`;
-    body.appendChild(row);
-    body.appendChild(detail);
+    grid.appendChild(card);
 
     const opt = document.createElement("option");
     opt.value = `${cmd.bu}|${cmd.type}`;
@@ -303,7 +444,7 @@ function renderCommands() {
     select.appendChild(opt);
   });
 
-  body.querySelectorAll("[data-toggle]").forEach((btn) => {
+  grid.querySelectorAll("[data-toggle]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.getElementById(`detail-${btn.dataset.toggle}`).classList.toggle("open");
     });
@@ -337,6 +478,11 @@ async function loadStatus() {
     genEl.textContent = `Generado ${new Date(data.generated_at).toLocaleString("es")} ` +
       `desde la laptop que procesa la cola.`;
 
+    const kpiAuto = document.getElementById("kpi-automation");
+    kpiAuto.innerHTML = "";
+    kpiAuto.appendChild(chip(data.automation_status, STATUS_META[data.automation_status]?.label));
+    document.getElementById("kpi-pending").textContent = `${data.pending_count ?? "-"} archivo(s)`;
+
     const body = document.getElementById("status-body");
     body.innerHTML = "";
     (data.rows || []).forEach((r) => {
@@ -366,7 +512,7 @@ async function loadStatus() {
           ? `<a href="${escapeHtml(r.webpage_url)}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a>`
           : escapeHtml(r.name);
         const wbHtml = (r.workbooks || []).length
-          ? `<div class="muted" style="font-size:11.5px;margin-top:3px;">Lo usan: ${r.workbooks.map((wb) =>
+          ? `<div class="muted" style="font-size:11.5px;margin-top:4px;">Lo usan: ${r.workbooks.map((wb) =>
               wb.view_url
                 ? `<a href="${escapeHtml(wb.view_url)}" target="_blank" rel="noopener">${escapeHtml(wb.name)}</a>`
                 : escapeHtml(wb.name)
@@ -375,7 +521,6 @@ async function loadStatus() {
         const ownerHtml = r.owner ? ` <span class="muted">— propietario: ${escapeHtml(r.owner)}</span>` : "";
         const hintHtml = r.hint ? ` — <strong>${escapeHtml(r.hint)}</strong>` : "";
         const li = document.createElement("li");
-        li.style.display = "block";
         li.appendChild(chip(status, STATUS_META[status].label));
         li.innerHTML += ` <strong>${nameHtml}</strong>${ownerHtml}${hintHtml}${wbHtml}`;
         tbList.appendChild(li);
@@ -396,7 +541,7 @@ async function loadActivity() {
     const issues = await res.json();
     list.innerHTML = "";
     if (!issues.length) {
-      list.innerHTML = `<li class="muted">Todavia no hay pedidos.</li>`;
+      list.innerHTML = `<li class="muted">Todavía no hay pedidos.</li>`;
       return;
     }
     issues.forEach((issue) => {
