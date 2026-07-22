@@ -279,30 +279,30 @@ footer {
   <section id="pedir">
     <div class="section-head"><h2>Pedir una carga</h2></div>
     <p class="section-sub">
-      Se abre una pestaña nueva de GitHub para confirmar el pedido (necesitás una cuenta de GitHub,
-      gratis) — así queda quién lo pidió y cuándo.
+      Iniciá sesión con tu cuenta de GitHub (gratis) para confirmar quién sos — el pedido se crea
+      solo, sin pasos extra. Nunca vemos tu contraseña; solo tu nombre de usuario de GitHub.
     </p>
     <div class="card">
+      <div id="request-result" class="callout" style="display:none; color:var(--text); background:var(--surface-2); border-color:var(--border);"></div>
       <form class="request-form" id="request-form">
         <div class="form-grid">
           <div class="field">
-            <label for="f-nombre">Tu nombre</label>
-            <input id="f-nombre" name="nombre" type="text" required placeholder="Juan Pérez">
+            <label for="f-nombre">Tu nombre (opcional, además de tu usuario de GitHub)</label>
+            <input id="f-nombre" name="nombre" type="text" placeholder="Juan Pérez">
           </div>
           <div class="field">
-            <label for="f-email">Tu email</label>
-            <input id="f-email" name="email" type="email" required placeholder="juan.perez@mdlz.com">
+            <label for="f-email">Tu email (opcional)</label>
+            <input id="f-email" name="email" type="email" placeholder="juan.perez@mdlz.com">
           </div>
         </div>
         <div class="field">
           <label for="f-comando">Comando</label>
           <select id="f-comando" name="comando" required></select>
         </div>
-        <button class="submit-btn" type="submit">Ingresar →</button>
+        <button class="submit-btn" type="submit" id="submit-btn">Iniciar sesión con GitHub y enviar →</button>
         <p class="form-note">
-          Esto abre GitHub en una pestaña nueva con el pedido ya redactado — solo confirmá
-          ("Submit new issue") para encolarlo. Autoreportado: no hay verificación de identidad,
-          igual que hoy con Teams.
+          Al confirmar, GitHub te pide autorizar una sola vez — después el pedido se envía solo,
+          sin pantallas intermedias. Queda registrado con tu usuario real de GitHub.
         </p>
       </form>
     </div>
@@ -351,6 +351,12 @@ footer {
 const OWNER = "BecaLince2024";
 const REPO = "bpr-panel";
 const LABEL = "comando";
+
+// Login con GitHub via un Cloudflare Worker (protege el Client Secret -- nunca
+// llega al navegador). Se completan una vez creados el OAuth App y el Worker.
+const GITHUB_CLIENT_ID = "Ov23liXh9W5wSsq3Rj7x";
+const WORKER_URL = "https://bpr-panel-oauth.cordova-python.workers.dev";
+const REDIRECT_URI = "https://becalince2024.github.io/bpr-panel/";
 
 const LOAD_LABELS = {
   shares: "M&S", os_siso: "OS SISO", mv_siso: "MV SISO",
@@ -451,6 +457,13 @@ function renderCommands() {
   });
 }
 
+function showResult(html, tone) {
+  const box = document.getElementById("request-result");
+  box.style.display = "block";
+  box.style.borderColor = tone === "error" ? "var(--critical)" : "var(--good)";
+  box.innerHTML = html;
+}
+
 function renderRequestForm() {
   document.getElementById("request-form").addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -458,14 +471,63 @@ function renderRequestForm() {
     const email = document.getElementById("f-email").value.trim();
     const [bu, tipo] = document.getElementById("f-comando").value.split("|");
 
-    const title = encodeURIComponent(`Comando: ${bu.toUpperCase()} / ${LOAD_LABELS[tipo] || tipo}`);
-    const body = encodeURIComponent(
-      `BU: ${bu}\nTipo: ${tipo}\nNombre: ${nombre}\nEmail: ${email}\n\n` +
-      `(generado desde el panel, no editar las lineas de arriba)`
-    );
-    const url = `https://github.com/${OWNER}/${REPO}/issues/new?title=${title}&body=${body}&labels=${LABEL}`;
-    window.open(url, "_blank", "noopener");
+    const state = crypto.randomUUID();
+    sessionStorage.setItem("bpr_oauth_state", state);
+    sessionStorage.setItem("bpr_pending_request", JSON.stringify({ bu, load_type: tipo, nombre, email }));
+
+    const authUrl = `https://github.com/login/oauth/authorize` +
+      `?client_id=${encodeURIComponent(GITHUB_CLIENT_ID)}` +
+      `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
+      `&scope=public_repo` +
+      `&state=${encodeURIComponent(state)}`;
+    window.location.href = authUrl;
   });
+}
+
+async function handleOAuthReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const state = params.get("state");
+  if (!code) return;
+
+  // Limpia el ?code=...&state=... de la URL sin recargar.
+  window.history.replaceState({}, document.title, window.location.pathname);
+
+  const savedState = sessionStorage.getItem("bpr_oauth_state");
+  const pending = sessionStorage.getItem("bpr_pending_request");
+  sessionStorage.removeItem("bpr_oauth_state");
+  sessionStorage.removeItem("bpr_pending_request");
+
+  if (!pending || !state || state !== savedState) {
+    showResult("No se pudo confirmar el pedido (sesión expirada) — probá de nuevo desde el formulario.", "error");
+    return;
+  }
+
+  const btn = document.getElementById("submit-btn");
+  if (btn) { btn.disabled = true; btn.textContent = "Enviando…"; }
+  showResult("Confirmando con GitHub y enviando el pedido…", "ok");
+
+  try {
+    const req = JSON.parse(pending);
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, ...req }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || "error desconocido");
+
+    showResult(
+      `✅ Pedido enviado como <strong>@${escapeHtml(data.login)}</strong> — ` +
+      `<a href="${escapeHtml(data.html_url)}" target="_blank" rel="noopener">ver issue #${data.number}</a>. ` +
+      `Se procesa en el próximo ciclo.`,
+      "ok"
+    );
+  } catch (err) {
+    showResult(`No se pudo enviar el pedido: ${escapeHtml(err.message)}`, "error");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Iniciar sesión con GitHub y enviar →"; }
+  }
 }
 
 async function loadStatus() {
@@ -561,6 +623,7 @@ async function loadActivity() {
 
 renderCommands();
 renderRequestForm();
+handleOAuthReturn();
 loadStatus();
 loadActivity();
 </script>

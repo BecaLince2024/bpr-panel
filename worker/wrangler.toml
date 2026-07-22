@@ -1,0 +1,9 @@
+name = "bpr-panel-oauth"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+# Secretos (NO van acá, se cargan con: wrangler secret put NOMBRE):
+#   GITHUB_CLIENT_ID
+#   GITHUB_CLIENT_SECRET
+#
+# Ninguno de los dos queda expuesto al navegador -- viven solo en Cloudflare.
