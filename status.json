@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-21T09:30:51.017158",
+  "generated_at": "2026-07-22T09:28:07.755418",
   "automation_status": "critical",
-  "pending_count": 13,
+  "pending_count": 0,
   "rows": [
     {
       "bu": "brazil",
@@ -37,9 +37,9 @@
       "bu": "brazil",
       "load_type": "shares",
       "load_label": "M&S",
-      "status": "critical",
-      "timestamp": "2026-06-15T03:57:06.327140+00:00",
-      "rows": null,
+      "status": "good",
+      "timestamp": "2026-07-22T14:27:13.137866+00:00",
+      "rows": 1486,
       "submitted_by": "",
       "source": ""
     },
