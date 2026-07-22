@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T15:21:21.451128",
+  "generated_at": "2026-07-22T15:54:31.522625",
   "automation_status": "critical",
   "pending_count": 0,
   "tableau_refreshes": [
@@ -113,7 +113,7 @@
       "load_type": "shares",
       "load_label": "M&S",
       "status": "good",
-      "timestamp": "2026-07-22T15:01:51.066024+00:00",
+      "timestamp": "2026-07-22T20:46:23.133025+00:00",
       "rows": 1486,
       "submitted_by": "",
       "source": ""
