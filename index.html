@@ -373,10 +373,11 @@ async function loadStatus() {
             ).join(", ")}</div>`
           : "";
         const ownerHtml = r.owner ? ` <span class="muted">— propietario: ${escapeHtml(r.owner)}</span>` : "";
+        const hintHtml = r.hint ? ` — <strong>${escapeHtml(r.hint)}</strong>` : "";
         const li = document.createElement("li");
         li.style.display = "block";
         li.appendChild(chip(status, STATUS_META[status].label));
-        li.innerHTML += ` <strong>${nameHtml}</strong>${ownerHtml}${wbHtml}`;
+        li.innerHTML += ` <strong>${nameHtml}</strong>${ownerHtml}${hintHtml}${wbHtml}`;
         tbList.appendChild(li);
       });
     }
