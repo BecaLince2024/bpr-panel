@@ -1,7 +1,21 @@
 {
-  "generated_at": "2026-07-22T09:38:43.841942",
+  "generated_at": "2026-07-22T09:46:14.926001",
   "automation_status": "critical",
   "pending_count": 0,
+  "tableau_refreshes": [
+    {
+      "name": "5af1ae11-b35d-4c24-9f36-e99e90d6c0fa",
+      "webpage_url": null,
+      "status": "triggered",
+      "workbooks": []
+    },
+    {
+      "name": "3fef6917-f582-40fe-b84d-e78c90891824",
+      "webpage_url": null,
+      "status": "error",
+      "workbooks": []
+    }
+  ],
   "rows": [
     {
       "bu": "brazil",
