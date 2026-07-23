@@ -17,14 +17,15 @@
   --border:    rgba(16,21,31,0.09);
   --shadow:    0 1px 2px rgba(16,21,31,.04), 0 8px 24px -12px rgba(16,21,31,.12);
 
-  --brand-1:   #002d72;   /* azul corporativo oscuro (hero) */
-  --brand-2:   #0057b8;   /* azul corporativo medio */
-  --accent:    #0057b8;
+  /* Paleta oficial MDLZ (Dashboard Design Standards, "MDLZ World" purple = color de marca principal) */
+  --brand-1:   #4F2170;   /* MDLZ World -- purpura de marca */
+  --brand-2:   #724D8D;   /* MDLZ World medio */
+  --accent:    #4F2170;
   --accent-ink:#ffffff;
 
-  --good:      #0ca30c;
-  --warning:   #b9790a;
-  --critical:  #d03b3b;
+  --good:      #287819;   /* Go Green (oficial, usado en Tableau para KPIs positivos) */
+  --warning:   #B5710A;   /* Golden Wheat oscurecido para contraste de texto */
+  --critical:  #A52323;   /* Tasty Red (oficial, usado en Tableau para KPIs negativos) */
 }
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
@@ -38,13 +39,13 @@
     --grid:      #232a3a;
     --border:    rgba(255,255,255,0.08);
     --shadow:    0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
-    --brand-1:   #001c47;
-    --brand-2:   #3987e5;
-    --accent:    #4c9bf0;
-    --accent-ink:#04101f;
-    --good:      #16c060;
-    --warning:   #e0a638;
-    --critical:  #f0716f;
+    --brand-1:   #37174F;
+    --brand-2:   #957AA9;
+    --accent:    #C3AAD3;
+    --accent-ink:#2A1240;
+    --good:      #4CAF3A;
+    --warning:   #EAAB5E;
+    --critical:  #E4827E;
   }
 }
 :root[data-theme="dark"] {
@@ -53,8 +54,8 @@
   --text: #f4f6fb; --text-2: #aab2c5; --muted: #7c869b; --grid: #232a3a;
   --border: rgba(255,255,255,0.08);
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
-  --brand-1: #001c47; --brand-2: #3987e5; --accent: #4c9bf0; --accent-ink: #04101f;
-  --good: #16c060; --warning: #e0a638; --critical: #f0716f;
+  --brand-1: #37174F; --brand-2: #957AA9; --accent: #C3AAD3; --accent-ink: #2A1240;
+  --good: #4CAF3A; --warning: #EAAB5E; --critical: #E4827E;
 }
 
 * { box-sizing: border-box; }
