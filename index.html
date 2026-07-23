@@ -155,6 +155,14 @@ tbody tr:hover td { background: var(--surface-2); }
 .muted { color: var(--muted); }
 
 /* ---------- command cards ---------- */
+.cmd-group { margin-bottom: 22px; }
+.cmd-group:last-child { margin-bottom: 0; }
+.cmd-group-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--text-2); margin: 0 0 10px;
+}
+.cmd-group-title .count { color: var(--muted); font-weight: 600; text-transform: none; letter-spacing: 0; }
 .cmd-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;
 }
@@ -220,6 +228,39 @@ footer {
   margin-top: 48px; font-size: 12px; color: var(--muted); line-height: 1.7;
   border-top: 1px solid var(--grid); padding-top: 20px;
 }
+
+.result-box {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: 12px; margin-bottom: 16px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  font-size: 13px; line-height: 1.6; color: var(--text);
+}
+.result-box.pending { border-color: var(--accent); }
+.result-box.ok { border-color: var(--good); }
+.result-box.error { border-color: var(--critical); }
+.result-icon {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+.result-box.pending .result-icon { background: var(--accent); }
+.result-box.ok .result-icon { background: var(--good); }
+.result-box.error .result-icon { background: var(--critical); }
+.result-body { flex: 1; min-width: 0; }
+.result-title { font-weight: 700; margin-bottom: 2px; }
+.result-detail { color: var(--text-2); word-break: break-word; }
+.result-detail a { font-weight: 600; }
+@media (max-width: 420px) {
+  .result-box { flex-direction: column; gap: 8px; }
+}
+
+.spinner {
+  display: inline-block; width: 14px; height: 14px; vertical-align: -2px;
+  border: 2px solid var(--grid); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .7s linear infinite; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-row { color: var(--muted); font-size: 13px; padding: 16px 0; text-align: center; }
 </style>
 </head>
 <body>
@@ -259,11 +300,11 @@ footer {
   <div class="kpis">
     <div class="kpi">
       <div class="kpi-label">Automatización</div>
-      <div class="kpi-value" id="kpi-automation">Cargando…</div>
+      <div class="kpi-value" id="kpi-automation"><span class="spinner"></span>Cargando…</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Pendientes en cola</div>
-      <div class="kpi-value" id="kpi-pending">Cargando…</div>
+      <div class="kpi-value" id="kpi-pending"><span class="spinner"></span>Cargando…</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Comandos disponibles</div>
@@ -274,7 +315,7 @@ footer {
   <section id="comandos">
     <div class="section-head"><h2>Comandos disponibles</h2></div>
     <p class="section-sub">Qué actualiza cada uno — tabla de BigQuery y datasource/dashboard de Tableau.</p>
-    <div class="cmd-grid" id="commands-body"></div>
+    <div id="commands-body"></div>
   </section>
 
   <section id="pedir">
@@ -284,7 +325,7 @@ footer {
       solo, sin pasos extra. Nunca vemos tu contraseña; solo tu nombre de usuario de GitHub.
     </p>
     <div class="card">
-      <div id="request-result" class="callout" style="display:none; color:var(--text); background:var(--surface-2); border-color:var(--border);"></div>
+      <div id="request-result" class="result-box" style="display:none;"></div>
       <form class="request-form" id="request-form">
         <div class="form-grid">
           <div class="field">
@@ -311,14 +352,14 @@ footer {
 
   <section id="estado">
     <div class="section-head"><h2>Estado en tiempo real</h2></div>
-    <p class="section-sub" id="status-generated">Cargando…</p>
+    <p class="section-sub" id="status-generated"><span class="spinner"></span>Cargando…</p>
     <div class="card" style="padding:0;">
       <div class="table-scroll">
         <table>
           <thead>
             <tr><th>BU</th><th>Tipo</th><th>Estado</th><th>Última corrida</th><th class="num">Filas</th><th>Pedido por</th></tr>
           </thead>
-          <tbody id="status-body"></tbody>
+          <tbody id="status-body"><tr><td colspan="6" class="loading-row"><span class="spinner"></span>Cargando…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -328,7 +369,7 @@ footer {
     <div class="section-head"><h2>Datasources de Tableau (último refresh)</h2></div>
     <p class="section-sub">Click en el nombre para abrir el datasource o el dashboard en Tableau y confirmar que es real.</p>
     <div class="card">
-      <ul class="tableau-list" id="tableau-list"><li class="muted">Cargando…</li></ul>
+      <ul class="tableau-list" id="tableau-list"><li class="loading-row"><span class="spinner"></span>Cargando…</li></ul>
     </div>
   </section>
 
@@ -336,7 +377,7 @@ footer {
     <div class="section-head"><h2>Actividad reciente</h2></div>
     <p class="section-sub">Últimos pedidos hechos desde esta página (vía issues de GitHub).</p>
     <div class="card">
-      <ul class="activity" id="activity-list"><li class="muted">Cargando…</li></ul>
+      <ul class="activity" id="activity-list"><li class="loading-row"><span class="spinner"></span>Cargando…</li></ul>
     </div>
   </section>
 
@@ -419,50 +460,127 @@ function relativeTime(iso) {
   return `hace ${Math.floor(secs / 86400)} d`;
 }
 
+const TYPE_ORDER = ["shares", "BE", "os_siso", "mv_siso", "m_s_nielsen"];
+
 function renderCommands() {
-  const grid = document.getElementById("commands-body");
+  const container = document.getElementById("commands-body");
   const select = document.getElementById("f-comando");
-  grid.innerHTML = "";
+  container.innerHTML = "";
   select.innerHTML = "";
 
-  COMMANDS.forEach((cmd, i) => {
-    const label = LOAD_LABELS[cmd.type] || cmd.type;
-
-    const card = document.createElement("div");
-    card.className = "cmd-card";
-    card.innerHTML = `
-      <div class="cmd-top">
-        <span class="bu-badge">${cmd.bu.toUpperCase()}</span>
-        <span class="cmd-type">${escapeHtml(label)}</span>
-      </div>
-      <div class="cmd-table">${escapeHtml(cmd.table)}</div>
-      <button class="pill-btn" type="button" data-toggle="${i}">Ver comando</button>
-      <div class="cmd-detail" id="detail-${i}">
-        Esto carga el Excel/CSV fuente de <strong>${cmd.bu.toUpperCase()} — ${escapeHtml(label)}</strong>
-        a la tabla de BigQuery <span class="mono">${escapeHtml(cmd.table)}</span>, y después dispara
-        un refresh en ${escapeHtml(TABLEAU_REFRESH_NOTE)}.
-      </div>
-    `;
-    grid.appendChild(card);
-
-    const opt = document.createElement("option");
-    opt.value = `${cmd.bu}|${cmd.type}`;
-    opt.textContent = `${cmd.bu.toUpperCase()} — ${label}`;
-    select.appendChild(opt);
+  const byType = new Map();
+  COMMANDS.forEach((cmd) => {
+    if (!byType.has(cmd.type)) byType.set(cmd.type, []);
+    byType.get(cmd.type).push(cmd);
   });
 
-  grid.querySelectorAll("[data-toggle]").forEach((btn) => {
+  const types = [...byType.keys()].sort(
+    (a, b) => TYPE_ORDER.indexOf(a) - TYPE_ORDER.indexOf(b)
+  );
+
+  let i = 0;
+  types.forEach((type) => {
+    const cmds = byType.get(type);
+    const label = LOAD_LABELS[type] || type;
+
+    const group = document.createElement("div");
+    group.className = "cmd-group";
+    group.innerHTML = `<div class="cmd-group-title">${escapeHtml(label)} <span class="count">(${cmds.length})</span></div>`;
+
+    const grid = document.createElement("div");
+    grid.className = "cmd-grid";
+
+    cmds.forEach((cmd) => {
+      const idx = i++;
+      const card = document.createElement("div");
+      card.className = "cmd-card";
+      card.innerHTML = `
+        <div class="cmd-top">
+          <span class="bu-badge">${cmd.bu.toUpperCase()}</span>
+          <span class="cmd-type">${escapeHtml(label)}</span>
+        </div>
+        <div class="cmd-table">${escapeHtml(cmd.table)}</div>
+        <button class="pill-btn" type="button" data-toggle="${idx}">Ver comando</button>
+        <div class="cmd-detail" id="detail-${idx}">
+          Esto carga el Excel/CSV fuente de <strong>${cmd.bu.toUpperCase()} — ${escapeHtml(label)}</strong>
+          a la tabla de BigQuery <span class="mono">${escapeHtml(cmd.table)}</span>, y después dispara
+          un refresh en ${escapeHtml(TABLEAU_REFRESH_NOTE)}.
+        </div>
+      `;
+      grid.appendChild(card);
+
+      const opt = document.createElement("option");
+      opt.value = `${cmd.bu}|${cmd.type}`;
+      opt.textContent = `${cmd.bu.toUpperCase()} — ${label}`;
+      select.appendChild(opt);
+    });
+
+    group.appendChild(grid);
+    container.appendChild(group);
+  });
+
+  container.querySelectorAll("[data-toggle]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.getElementById(`detail-${btn.dataset.toggle}`).classList.toggle("open");
     });
   });
 }
 
-function showResult(html, tone) {
+const RESULT_ICONS = { pending: '<span class="spinner" style="border-color:rgba(255,255,255,.4);border-top-color:#fff;"></span>', ok: "✓", error: "✕" };
+
+function showResult(tone, title, detailHtml) {
   const box = document.getElementById("request-result");
-  box.style.display = "block";
-  box.style.borderColor = tone === "error" ? "var(--critical)" : "var(--good)";
-  box.innerHTML = html;
+  box.style.display = "flex";
+  box.className = `result-box ${tone}`;
+  box.innerHTML = `
+    <span class="result-icon">${RESULT_ICONS[tone] || ""}</span>
+    <div class="result-body">
+      <div class="result-title">${escapeHtml(title)}</div>
+      ${detailHtml ? `<div class="result-detail">${detailHtml}</div>` : ""}
+    </div>
+  `;
+}
+
+async function pollIssueUntilClosed(issueNumber, htmlUrl, login) {
+  const maxAttempts = 16; // ~16 x 10s = 160s, cubre el ciclo de ~2 min + margen
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    showResult(
+      "pending",
+      `Procesando pedido de @${login}…`,
+      `<a href="${escapeHtml(htmlUrl)}" target="_blank" rel="noopener">ver issue #${issueNumber}</a> — ` +
+      `intento ${attempt}/${maxAttempts}, se revisa cada 10s (tarda hasta ~2 min).`
+    );
+
+    await new Promise((r) => setTimeout(r, 10000));
+
+    try {
+      const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/issues/${issueNumber}`);
+      if (!res.ok) continue;
+      const issue = await res.json();
+      if (issue.state === "closed") {
+        const cres = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/issues/${issueNumber}/comments`);
+        const comments = cres.ok ? await cres.json() : [];
+        const last = comments[comments.length - 1];
+        const body = last ? last.body : "Terminado (sin detalle).";
+        const failed = /^error/i.test(body || "");
+        showResult(
+          failed ? "error" : "ok",
+          failed ? "Terminó con error" : "¡Listo!",
+          `${escapeHtml(body)} — <a href="${escapeHtml(htmlUrl)}" target="_blank" rel="noopener">ver issue #${issueNumber}</a>`
+        );
+        return;
+      }
+    } catch (err) {
+      // fallo de red puntual -- se reintenta en la proxima vuelta
+    }
+  }
+
+  showResult(
+    "pending",
+    "Sigue en cola",
+    `Todavía no se procesó — puede que la laptop esté apagada o sin corriente. ` +
+    `<a href="${escapeHtml(htmlUrl)}" target="_blank" rel="noopener">seguí el issue #${issueNumber} acá</a>.`
+  );
 }
 
 function renderRequestForm() {
@@ -500,13 +618,13 @@ async function handleOAuthReturn() {
   sessionStorage.removeItem("bpr_pending_request");
 
   if (!pending || !state || state !== savedState) {
-    showResult("No se pudo confirmar el pedido (sesión expirada) — probá de nuevo desde el formulario.", "error");
+    showResult("error", "No se pudo confirmar el pedido", "Sesión expirada — probá de nuevo desde el formulario.");
     return;
   }
 
   const btn = document.getElementById("submit-btn");
   if (btn) { btn.disabled = true; btn.textContent = "Enviando…"; }
-  showResult("Confirmando con GitHub y enviando el pedido…", "ok");
+  showResult("pending", "Confirmando con GitHub…", "Creando el pedido, un momento.");
 
   try {
     const req = JSON.parse(pending);
@@ -518,17 +636,13 @@ async function handleOAuthReturn() {
     const data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.error || "error desconocido");
 
-    showResult(
-      `✅ Pedido enviado como <strong>@${escapeHtml(data.login)}</strong> — ` +
-      `<a href="${escapeHtml(data.html_url)}" target="_blank" rel="noopener">ver issue #${data.number}</a>. ` +
-      `Se procesa en el próximo ciclo.`,
-      "ok"
-    );
-  } catch (err) {
-    showResult(`No se pudo enviar el pedido: ${escapeHtml(err.message)}`, "error");
-  } finally {
     if (btn) { btn.disabled = false; btn.textContent = "Iniciar sesión con GitHub y enviar →"; }
+    pollIssueUntilClosed(data.number, data.html_url, data.login);
+    return;
+  } catch (err) {
+    showResult("error", "No se pudo enviar el pedido", escapeHtml(err.message));
   }
+  if (btn) { btn.disabled = false; btn.textContent = "Iniciar sesión con GitHub y enviar →"; }
 }
 
 async function loadStatus() {
@@ -591,6 +705,10 @@ async function loadStatus() {
     }
   } catch (err) {
     genEl.textContent = "No se pudo cargar el estado (status.json). ¿Ya corrió al menos un ciclo desde que se publicó el panel?";
+    document.getElementById("kpi-automation").textContent = "—";
+    document.getElementById("kpi-pending").textContent = "—";
+    document.getElementById("status-body").innerHTML =
+      `<tr><td colspan="6" class="loading-row">No se pudo cargar.</td></tr>`;
   }
 }
 
