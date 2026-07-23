@@ -1,8 +1,82 @@
 {
-  "generated_at": "2026-07-22T22:13:01.895056",
+  "generated_at": "2026-07-22T22:21:05.178343",
   "automation_status": "good",
   "pending_count": 0,
-  "tableau_refreshes": [],
+  "tableau_refreshes": [
+    {
+      "name": "bpr_mns",
+      "owner": "Cordova, Bruno (Contractor)",
+      "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1414750",
+      "status": "triggered",
+      "hint": "",
+      "workbooks": [
+        {
+          "name": "da_bpr_v3",
+          "view_url": "http://tableau.mdlz.com/#/site/Growth/views/da_bpr_v3/MarketSnapshot"
+        },
+        {
+          "name": "da_bpr_v2",
+          "view_url": "http://tableau.mdlz.com/#/site/Growth/views/da_bpr_v2/MarketSnapshot"
+        }
+      ]
+    },
+    {
+      "name": "Nielsen BPR",
+      "owner": "Renato Vilcarromero",
+      "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1604048",
+      "status": "error",
+      "hint": "Sin permiso. Pedir acceso a Renato Vilcarromero (dueño de este datasource).",
+      "workbooks": [
+        {
+          "name": "M&S DASH",
+          "view_url": "http://tableau.mdlz.com/#/site/Growth/views/MSDASH/LandingPage"
+        },
+        {
+          "name": "M&S DASHBOARD",
+          "view_url": "https://tableau.mdlz.com/#/site/Growth/workbooks/27792/views"
+        }
+      ]
+    },
+    {
+      "name": "M&S custom remastered",
+      "owner": "Cordova, Bruno (Contractor)",
+      "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1538640",
+      "status": "triggered",
+      "hint": "",
+      "workbooks": [
+        {
+          "name": "M&S DASHBOARD",
+          "view_url": "https://tableau.mdlz.com/#/site/Growth/workbooks/27792/views"
+        }
+      ]
+    },
+    {
+      "name": "M&S custom remastered_historical",
+      "owner": "Cordova, Bruno (Contractor)",
+      "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1538641",
+      "status": "triggered",
+      "hint": "",
+      "workbooks": [
+        {
+          "name": "M&S DASHBOARD",
+          "view_url": "https://tableau.mdlz.com/#/site/Growth/workbooks/27792/views"
+        }
+      ]
+    },
+    {
+      "name": "M&S custom remastered_OLT",
+      "owner": "Cordova, Bruno (Contractor)",
+      "webpage_url": "http://tableau.mdlz.com/#/site/Growth/datasources/1539905",
+      "status": "triggered",
+      "hint": "",
+      "workbooks": [
+        {
+          "name": "M&S DASHBOARD",
+          "view_url": "https://tableau.mdlz.com/#/site/Growth/workbooks/27792/views"
+        }
+      ]
+    }
+  ],
   "rows": [
     {
       "bu": "brazil",
@@ -38,9 +112,9 @@
       "bu": "brazil",
       "load_type": "shares",
       "load_label": "M&S",
-      "status": "critical",
-      "timestamp": "2026-07-22T22:41:27.945536+00:00",
-      "rows": null,
+      "status": "good",
+      "timestamp": "2026-07-23T03:19:57.757037+00:00",
+      "rows": 1486,
       "submitted_by": "Bruno Emanuel <bruno.cordova@mdlz.com>",
       "source": "web"
     },
